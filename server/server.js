@@ -792,7 +792,7 @@ var server = http.createServer(function(req, res){
         return;
       }
 
-      res.writeHead(200, {"Cache-Control": "max-age=0"});
+      res.writeHead(200, {"Cache-Control": "max-age=3600"});
       res.write(file, "binary");
       res.end();
     });
