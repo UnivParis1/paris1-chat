@@ -280,8 +280,7 @@ io.on('connection', function(socket){
     // Shibboleth auth using handshake's http headers
     recv.user = socket.handshake.headers.remote_user;
     recv.name = decodeURIComponent(escape(socket.handshake.headers.displayname));
-    var affectation = socket.handshake.headers.supannentiteaffectation ? socket.handshake.headers.supannentiteaffectation.split(";") : undefined;
-    recv.affectations = affectation || ["guest"];
+    recv.affectations = socket.handshake.headers.supannentiteaffectation.split(";") || ["guest"];
     recv.affectationPrincipale = socket.handshake.headers.supannentiteaffectationprincipale ||
                                  recv.affectations && recv.affectations[0] ||
                                  "guest";
@@ -751,7 +750,8 @@ var server = http.createServer(function(req, res){
   var urlParts = url.parse(req.url, true);
   var uri = urlParts.pathname;
   if (uri === "/login") uri = "/";
-  var filename = path.join(__dirname, "../client/build/" + uri);
+  var filename = path.join(__dirname, "../client" + uri);
+
   if (!req.headers.cookie || req.headers.cookie.indexOf('_shibsession_') === -1){
     var idpId = "";
     if (urlParts.query.idpId){
