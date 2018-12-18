@@ -780,11 +780,16 @@ var server = http.createServer(function(req, res){
       return;
     }
 
-    var headers = {"Cache-Control": "max-age=3600"};
     if (fs.statSync(filename).isDirectory()){
       filename += '/index.html';
+    }
+    var headers = {};
+    var max_age = 3600;
+    if (filename.match(/\.html$/)) {
+      max_age = 0;
       headers['Content-Type'] = 'text/html';
     }
+    headers["Cache-Control"] = "max-age=" + max_age;
 
     fs.readFile(filename, "binary", function(err, file) {
       if (err) {
