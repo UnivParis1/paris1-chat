@@ -59,3 +59,10 @@ Vous pouvez minimiser le tchat en cliquant sur la barre de navigation ou dans le
 ### Déconnexion
 
 Cliquez sur le bouton "Se déconnecter" pour quitter le tchat. Il faudra revenir sur cette page pour le réactiver.
+
+## Statistiques
+
+### Nombre de messages par jour
+```javascript
+db.messages.aggregate([ { $project: { yearMonthDay: { $dateToString: { format: "%Y-%m-%d", date: "$posted" } } } }, { $group: { "_id": "$yearMonthDay", count: {$sum: 1} } } ]).map(e => e._id + " " + e.count).sort()
+```
